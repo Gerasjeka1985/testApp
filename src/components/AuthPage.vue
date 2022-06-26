@@ -13,6 +13,10 @@
 import axios from "axios";
 
 export default {
+    //да так делать плохо я извиняюсь
+    beforeCreate() {
+        document.querySelector("#chartdiv").setAttribute("style", "display:none");
+    },
 
     data: () => ({
         message: '',
@@ -33,9 +37,9 @@ export default {
                         console.log(resp.data);
                         localStorage.setItem("Leadhit", this.message);
                         window.location.href = 'http://localhost:8080/#/altc';
-
                     })
             } catch (err) {
+                alert("Not correct get params. Key deleted")
                 localStorage.removeItem("Leadhit");
                 console.log(err);
             }
@@ -43,6 +47,7 @@ export default {
 
     }
 }
+
 </script>
 
 <style>
