@@ -17,8 +17,7 @@ export default {
 
 am5.ready(function () {
           if (localStorage.getItem("Leadhit") == "5f8475902b0be670555f1bb3") {
-                    document.querySelector("#chartdiv").setAttribute("style", "display:block")
-
+                    document.querySelector("#chartdiv").setAttribute("style", "display:block");
                     // Create root element
                     var root = am5.Root.new("chartdiv");
 

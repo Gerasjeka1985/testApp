@@ -1,6 +1,6 @@
 <template>
 
-    <form id="authForm" @submit="checkForm">
+    <form id="authForm" @submit.prevent="checkForm">
         <h2>Авторизация</h2>
         <input maxlength="24" v-model="message" id="messInput" placeholder=" введите Leadhit-Site-Id" />
         <button type="submit">
@@ -13,7 +13,6 @@
 import axios from "axios";
 
 export default {
-    //да так делать плохо я извиняюсь
     beforeCreate() {
         document.querySelector("#chartdiv").setAttribute("style", "display:none");
     },
@@ -24,27 +23,30 @@ export default {
     }),
     methods: {
         async checkForm() {
-            console.log(this.message)
             try {
-                await axios.get('https://track-api.leadhit.io/client/test_auth',
-                    {
-                        headers: {
-                            "Api-Key": "5f8475902b0be670555f1bb3:eEZn8u05G3bzRpdL7RiHCvrYAYo",
-                            "Leadhit-Site-Id": this.message
-                        }
-                    })
-                    .then(resp => {
-                        console.log(resp.data);
-                        localStorage.setItem("Leadhit", this.message);
-                        window.location.href = 'http://localhost:8080/#/altc';
-                    })
-            } catch (err) {
-                alert("Not correct get params. Key deleted")
+                if (localStorage.getItem("Leadhit" == "5f8475902b0be670555f1bb3")) {
+                    window.location.href = 'http://localhost:8080/#/altc';
+                }
+                else {
+                    await axios.get('https://track-api.leadhit.io/client/test_auth',
+                        {
+                            headers: {
+                                "Api-Key": "5f8475902b0be670555f1bb3:eEZn8u05G3bzRpdL7RiHCvrYAYo",
+                                "Leadhit-Site-Id": this.message
+                            }
+                        })
+                        .then(() => {
+                            localStorage.setItem("Leadhit", this.message);
+                        })
+                    window.location.href = 'http://localhost:8080/#/altc';
+                    document.querySelector("#chartdiv").setAttribute("style", "display:block");
+                }
+            } catch {
+                alert("Wrong Api-key, try again...");
                 localStorage.removeItem("Leadhit");
-                console.log(err);
             }
-        }
 
+        }
     }
 }
 
